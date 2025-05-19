@@ -1,3 +1,18 @@
+const testCases = [
+    {
+      transformName: "ssl.certToIssuer",
+      expectedInput: "maltego.X509Certificate",
+      expectedOutputs: ["maltego.Phrase"]
+    },
+    {
+      transformName: "ssl.DomainToCert",
+      expectedInput: "maltego.Domain",
+      expectedOutputs: ["maltego.X509Certificate"]
+    },
+    // Add more cases as needed
+  ];
+
+
 const axios = require('axios');
 const xml2js = require('xml2js');
 
@@ -62,6 +77,7 @@ async function fetchTransformsFromApps(apps) {
       console.log(`  Input Requirements: ${Array.isArray(inputs) ? inputs.map(i => i.$.Display).join(', ') : inputs?.$.Display || 'None'}`);
         counter++;
         validateTransform(transform);
+compareAgainstTestCases(transform);
     });
   }
 }
@@ -88,6 +104,36 @@ function validateTransform(transform) {
         console.log("*********************END***************************");
 
     }
+}
+function compareAgainstTestCases(transform) {
+  const t = transform.$;
+  const transformName = t?.TransformName;
+  const inputEntity = transform.InputEntity;
+  const outputEntities = transform.OutputEntities?.OutputEntity;
+  const actualOutputs = Array.isArray(outputEntities) ? outputEntities : outputEntities ? [outputEntities] : [];
+
+  const testCase = testCases.find(tc => tc.transformName === transformName);
+  if (!testCase) {
+    console.warn(`⚠️ No test case found for transform "${transformName}"`);
+    return;
+  }
+
+  const inputMatch = inputEntity === testCase.expectedInput;
+  const outputsMatch = actualOutputs.length === testCase.expectedOutputs.length &&
+    actualOutputs.every(o => testCase.expectedOutputs.includes(o));
+
+  if (!inputMatch || !outputsMatch) {
+    console.log(`❌ Mismatch for transform "${transformName}"`);
+    if (!inputMatch) {
+      console.log(`  - Expected Input: ${testCase.expectedInput}, Actual: ${inputEntity}`);
+    }
+    if (!outputsMatch) {
+      console.log(`  - Expected Outputs: ${testCase.expectedOutputs.join(', ')}`);
+      console.log(`  - Actual Outputs: ${actualOutputs.join(', ')}`);
+    }
+  } else {
+    console.log(`✅ Transform "${transformName}" passed entity type validation.`);
+  }
 }
 
 async function main() {
