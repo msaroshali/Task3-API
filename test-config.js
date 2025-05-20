@@ -3,7 +3,7 @@
 // This file contains test cases for the transforms
 // from both transform applications i.e Cert Spotter and Live Certs. 
 
-const testCases = [
+export const testCases = [
     
 // Test cases for Live Certs transforms
   {
@@ -87,5 +87,3 @@ const testCases = [
       expectedInputRequirements: ["Certspotter API Key"]
   },
 ];
-
-module.exports = { testCases };
