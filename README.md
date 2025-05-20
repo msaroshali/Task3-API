@@ -5,11 +5,11 @@ This project automates the validation of Maltego transforms by fetching transfor
 ---
 
 ## 📁 Project Structure
-.
-├── parse-verify.js # Main script to fetch and validate transforms
-├── validate.js # Validation logic for individual transforms
-├── test-config.js # Expected transform definitions (test cases)
-├── package.json # Project metadata and dependencies
+      .
+      ├── parse-verify.js   # Main script to fetch and validate transforms
+      ├── validate.js       # Validation logic for individual transforms
+      ├── test-config.js    # Expected transform definitions (test cases)
+      ├── package.json      # Project metadata and dependencies
 
 ---
 
@@ -32,22 +32,21 @@ This project automates the validation of Maltego transforms by fetching transfor
 ## 🚀 Usage
 Run the main script
 
-    ```bash
-    node parse-verify.js
+      node parse-verify.js
 
-    This will:
+ This will:
 
-    Fetch the seed XML from Maltego.
+* Fetch the seed XML from Maltego.
 
-    Discover transform application URLs.
+* Discover transform application URLs.
 
-    Retrieve transform metadata.
+* Retrieve transform metadata.
 
-    Validate each transform against the expected test cases from test-config.js.
+* Validate each transform against the expected test cases from test-config.js.
 
 ## 📌 Notes
-    The script uses ES modules, so all import paths must include .js.
+* The script uses ES modules, so all import paths must include .js.
 
-    Output will clearly show which transforms pass/fail based on metadata validation.
+* Output will clearly show which transforms pass/fail based on metadata validation.
 
-    Handles multiple transform applications like Cert Spotter and Live Certs.
+* Handles multiple transform applications like Cert Spotter and Live Certs.
